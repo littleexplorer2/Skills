@@ -138,16 +138,17 @@ def cheat_tex(d,font):
     return '\n'.join(p)+'\n\\end{document}\n'
 
 def find_engine(explicit=None):
-    candidate=explicit or os.environ.get('LECTURE_REVIEW_XELATEX') or shutil.which('xelatex')
-    if not candidate and Path('/Library/TeX/texbin/xelatex').is_file():candidate='/Library/TeX/texbin/xelatex'
-    if not candidate:raise RuntimeError('XeLaTeX missing. Install a TeX distribution with ctex, amsmath, geometry, enumitem, multicol, needspace and fancyhdr; or set LECTURE_REVIEW_XELATEX.')
-    return str(candidate)
+    from runtime_paths import find_xelatex
+    return find_xelatex(explicit)
+
 
 def compile_tex(source,folder,engine=None):
     folder.mkdir(parents=True,exist_ok=True);tex=folder/'main.tex';tex.write_text(source,encoding='utf-8')
     exe=find_engine(engine)
+    engine_env=os.environ.copy()
+    engine_env['PATH']=str(Path(exe).parent)+os.pathsep+engine_env.get('PATH','')
     for run in range(2):
-        proc=subprocess.run([exe,'-no-shell-escape','-interaction=nonstopmode','-halt-on-error','-file-line-error','main.tex'],cwd=folder,capture_output=True,timeout=120)
+        proc=subprocess.run([exe,'-no-shell-escape','-interaction=nonstopmode','-halt-on-error','-file-line-error','main.tex'],cwd=folder,capture_output=True,timeout=120,env=engine_env)
         (folder/f'compile-{run+1}.txt').write_bytes(proc.stdout+proc.stderr)
         if proc.returncode:raise RuntimeError(f'XeLaTeX failed; inspect {folder}/compile-{run+1}.txt')
     log=(folder/'main.log').read_text(errors='replace')

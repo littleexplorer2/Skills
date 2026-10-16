@@ -35,7 +35,7 @@ description: 从用户提供的课件 PPT/PDF、课堂笔记和教材制作有�
 2. **读取证据**：按讲建立“原页码 → 讲解主线 → 概念/公式/图表/例题”映射。重要图表要查看原页图像，核对坐标轴、图例与单位；OCR 不能代替核对。
 3. **组织内容**：summary 读 [summary_mode.md](references/summary_mode.md)；cheat 读 [cheat_sheet_mode.md](references/cheat_sheet_mode.md)。先完成准确解释，再压缩用于打印的文字。
 4. **编写 JSON**：按 [content_schema.md](references/content_schema.md) 填写。语言选项控制模板标签；正文必须由作者按所选语言撰写。复杂公式、原图和表格若不能被内置渲染器表达，应选择可验证的扩展方式，不能无声省略或输出未渲染的 LaTeX。
-5. **检查运行环境**：运行 `scripts/check_environment.py`；XeLaTeX 与跨平台配置见 [README.md](README.md)。复用现有解释器与依赖，不在每次生成时升级软件或改全局环境。
+5. **检查运行环境**：运行 `scripts/check_environment.py`。缺环境时使用根目录 `Install.command`（Mac）或 `Install-Windows.cmd`（Windows），按 README 安装缺失依赖并编译中英文数学示例；复用已有环境。只检查用安装器 check-only 参数。普通生成不自动安装或升级软件。
 6. **验证并生成**（命令从 skill 根目录执行；`python` 不可用时使用已确认的解释器路径）：
 
    ```bash
@@ -56,4 +56,4 @@ description: 从用户提供的课件 PPT/PDF、课堂笔记和教材制作有�
 
 ## 跨平台运行
 
-Windows 按 README 配置 XeLaTeX；Mac 可使用 `scripts/build_pdf_mac.sh` / `check_pdf_mac.sh`，支持 `LECTURE_REVIEW_PYTHON` 指定现有环境。不要复制虚拟环境或 TeX 运行库跨系统。完整 skill 文件夹可通过 ZIP/Git 同步，本地安装不等于账号自动同步。
+Windows 首次运行 `Install-Windows.cmd`，Mac 首次运行 `Install.command`；安装器负责检查与补齐 XeLaTeX、所需 TeX 包、字体及独立 Python 依赖，成功后自动安装本 skill。Windows 提供 `scripts/build_pdf_windows.cmd` / `check_pdf_windows.cmd` 包装器。后续按 README 使用环境；Mac 可使用 `scripts/build_pdf_mac.sh` / `check_pdf_mac.sh`，支持 `LECTURE_REVIEW_PYTHON` 指定现有环境。不要复制虚拟环境或 TeX 运行库跨系统。完整 skill 文件夹可通过 ZIP/Git 同步，本地安装不等于账号自动同步。

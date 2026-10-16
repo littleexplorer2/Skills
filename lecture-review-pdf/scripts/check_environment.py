@@ -15,7 +15,8 @@ def inspect_environment():
   kpse=Path(engine).parent/('kpsewhich.exe' if sys.platform=='win32' else 'kpsewhich')
   candidate=str(kpse) if kpse.is_file() else shutil.which('kpsewhich')
   if candidate:
-   for name in ['ctexart.cls','amsmath.sty','amssymb.sty','geometry.sty','needspace.sty','enumitem.sty','multicol.sty','fancyhdr.sty','hyperref.sty','FandolSong-Regular.otf']:
+   from install_runtime import RESOURCES
+   for name in RESOURCES:
     p=subprocess.run([candidate,name],capture_output=True,text=True,timeout=10);latex_packages[name]=bool(p.stdout.strip())
     if not latex_packages[name]:errors.append('Missing TeX resource: '+name)
   else:errors.append('kpsewhich missing; cannot verify TeX packages')

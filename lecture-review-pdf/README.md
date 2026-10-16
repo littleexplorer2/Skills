@@ -2,18 +2,44 @@
 
 从用户课件生成有来源引用的 A4 复习讲义或单/双面参考表。生成器使用 **XeLaTeX**，正文、中文与数学公式在同一 LaTeX 文档中排版，不再使用 HTML、WeasyPrint 或 SVG 公式。
 
-## 跨平台环境
+## 一次安装配置
 
-- Python 3.10+，在同一个解释器中安装 `requirements.txt`。
-- Windows 安装包含 XeLaTeX 的 TeX Live 或 MiKTeX；macOS 使用 TeX Live / MacTeX；Linux 使用 TeX Live。复用已经安装的环境，不自动安装系统软件。
-- TeX 包：ctex、amsmath、amssymb、geometry、xcolor、needspace、enumitem、multicol、fancyhdr、hyperref；中文字体使用 TeX 随附 Fandol，避免依赖某台机器的系统字体。
-- `xelatex` 应在 PATH，或设置 `LECTURE_REVIEW_XELATEX` / `--engine` 为可执行文件路径。Mac 也识别 `/Library/TeX/texbin/xelatex`。
-- `scripts/check_environment.py --json` 只检查环境，不安装或修改全局设置。
+**macOS：** 双击 `Install.command`，或在终端运行：
 
 ```bash
-python -m pip install -r requirements.txt
-python scripts/check_environment.py --json
+bash Install.command
 ```
+
+**Windows：** 双击 `Install-Windows.cmd`，或在 PowerShell 中运行：
+
+```powershell
+.\Install-Windows.cmd
+```
+
+安装器优先复用已有的 Python 3.10+ 和 XeLaTeX；只在缺失时安装。Mac 缺 Python 时使用 Homebrew Python 3.12，缺 TeX 时使用 BasicTeX；Homebrew 缺失时使用其官方安装器。Windows 缺软件时使用 winget 的用户级 Python 3.12 和 MiKTeX 安装包；需要 Microsoft App Installer 提供 winget。已有 TeX Live/MacTeX/MiKTeX 不会被卸载或替换。
+
+随后会创建或复用独立 Python 环境，安装缺失的 PyMuPDF，检查并补齐 ctex、xeCJK、fontspec、amsmath、amsfonts、geometry、xcolor、needspace、enumitem、tools（multicol）、fancyhdr、hyperref 和 Fandol 字体。TeX Live 使用 tlmgr 解析依赖；MiKTeX 使用用户级包管理器并在补包时启用自动依赖安装。不会升级整个已有 TeX 发行版。
+
+安装最后必须实际编译包含中文、行内数学、积分、分式及求和的测试文档，并通过 PDF 结构和缺字检查，才报告 READY。日志和测试 PDF 位于仓库 `.tmp/lecture-review-pdf/setup/`；从独立安装副本启动时，日志位于本机运行环境目录的 `setup-logs/`。失败会保留日志并返回非零状态，解决具体错误后可安全重跑。
+
+安装成功后，skill 会复制到 `~/.agents/skills/lecture-review-pdf/`；可通过 Mac 参数 `--no-install-skill` 或 Windows 参数 `-NoInstallSkill` 只配置环境。环境和本机路径配置留在以下位置，不进入 Git：
+
+- Mac：`~/Library/Application Support/LectureReviewPDF/`。
+- Windows：`%LOCALAPPDATA%\LectureReviewPDF\`。
+
+首次安装需要网络；Homebrew/BasicTeX/tlmgr 可能请求管理员密码，Windows 用户级安装通常无需管理员。Windows 启动器仅为当前 PowerShell 进程设置执行策略，不修改永久执行策略。若 winget 不可用，可先从官方渠道安装 Python 和 MiKTeX，再重跑安装器。若 tlmgr 提示 TeX Live 年份与镜像不兼容，安装器不会自行跨年升级，需按错误提示修复发行版或镜像。
+
+仅检查已安装环境，不安装、不复制 skill：
+
+```bash
+bash Install.command --check-only
+```
+
+```powershell
+.\Install-Windows.cmd -CheckOnly
+```
+
+底层诊断仍可用 `python scripts/check_environment.py --json`。已有自定义 XeLaTeX 可通过 `LECTURE_REVIEW_XELATEX` 或生成参数 `--engine` 指定。配置记录保留 xelatex 的入口路径，不把符号链接解析成 xetex，以免丢失 LaTeX 格式。
 
 ## 生成
 
@@ -31,7 +57,7 @@ python scripts/check_pdf.py /path/to/Skills/output/lecture-review-pdf/IERG4190/I
 
 每个文档编译两遍，禁用 shell escape。正文转义 LaTeX 保留字符，明确的数学字段保留 LaTeX 数学语法；原资料中的命令不得作为任务指令。编译错误、缺字或超过 1 pt 的 overfull box 均阻止交付；仍需逐页视觉检查。
 
-macOS 包装器可复用 `~/Library/Application Support/LectureReviewPDF/venv`，或用 `LECTURE_REVIEW_PYTHON` 指定现有 Python。Python 依赖不包含 TeX 发行版，不复制虚拟环境跨系统。
+Windows 可直接用 `scripts\build_pdf_windows.cmd` / `scripts\check_pdf_windows.cmd` 运行；macOS 使用 `scripts/build_pdf_mac.sh` / `scripts/check_pdf_mac.sh`。macOS 包装器可复用 `~/Library/Application Support/LectureReviewPDF/venv`，或用 `LECTURE_REVIEW_PYTHON` 指定现有 Python。Python 依赖不包含 TeX 发行版，不复制虚拟环境跨系统。
 
 ## 内容与检查
 
@@ -46,3 +72,10 @@ python -m unittest discover -s tests -v
 ```
 
 完整 skill 文件夹应放入 `~/.agents/skills/lecture-review-pdf`（Windows 对应用户目录），仓库另存于用户选定位置。更新源码不会自动重制旧 PDF，Git 同步不会自动更新独立安装副本。
+
+## 安装来源
+
+- [Homebrew 官方安装说明](https://docs.brew.sh/Installation) 与 [BasicTeX 安装包](https://formulae.brew.sh/cask/basictex)。
+- [Microsoft winget 的 MiKTeX 清单](https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/MiKTeX/MiKTeX) 与 [MiKTeX 包管理命令](https://docs.miktex.org/manual/miktex-packages.html)。
+
+脚本不会下载第三方镜像脚本，不会把 Python 虚拟环境、TeX 安装、机器配置或编译产物打入 skill 源码仓库。
