@@ -2,12 +2,12 @@
 
 ## Storage
 - Course code comes from explicit user input or an unambiguous source label; never infer it from a vague filename. If missing, ask while continuing independent inspection.
-- Use `<output-root>/<course_code>/<course_code>_<scope>_<kind>.pdf`.
-- Example: `outputs/IERG4190/IERG4190_T01_StudyGuide.pdf`; combined `IERG4190_T01-T02_StudyGuide.pdf`; cheat `IERG4190_T01-T02_CheatSheet.pdf`.
+- Use `<output-root>/<course_code>_<scope>_<kind>.pdf`.
+- Example: `outputs/IERG4190_T01_StudyGuide.pdf`; combined `IERG4190_T01-T02_StudyGuide.pdf`; cheat `IERG4190_T01-T02_CheatSheet.pdf`.
 - Use zero-padded scope IDs such as T01, L02. Preserve the confirmed official course code. Kind is StudyGuide or CheatSheet. Do not add generic final/latest or timestamps by default.
-- Keep drafts, JSON, extracted text and page previews in `work/<course_code>/`. Never move the user's source files without instruction.
+- Keep drafts, JSON, extracted text and page previews in the task’s `work/` directory; do not require course-code subfolders. Never move the user's source files without instruction.
 - On revision, explicitly archive the previous PDF under `archive/` with a revision suffix, then rebuild the stable filename; if the user explicitly requests deleting previous generated files, delete those identified old outputs after the replacement passes QA. Never silently overwrite. Do not use two same-name skills as parallel active implementations.
-- `--output` is a root directory for every mode. The renderer creates the course subfolder and file names and refuses missing/unsafe codes and name collisions.
+- `--output` is a root directory for every mode. The renderer writes directly into that directory, creates no course-code subfolder, retains the course code in every PDF filename, and refuses missing/unsafe codes and name collisions.
 
 ## Formula authoring
 - Put inline math inside `$...$` and display math inside `$$...$$` in details, formula, examples, cautions, logic and self-check fields. JSON backslashes must be escaped.

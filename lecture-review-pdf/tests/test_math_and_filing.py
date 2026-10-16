@@ -17,7 +17,7 @@ class UnifiedTests(unittest.TestCase):
    with self.assertRaises(ValueError):r.validate(d)
  def test_naming_across_modes(self):
   d=self.data();d['meta']['course_code']='IERG4190';d['lectures']=d['lectures'][:1];d['lectures'][0]['id']='T01'
-  self.assertEqual(r.output_paths(d,Path('outputs'))[0],Path('outputs/IERG4190/IERG4190_T01_StudyGuide.pdf'))
+  self.assertEqual(r.output_paths(d,Path('outputs'))[0],Path('outputs/IERG4190_T01_StudyGuide.pdf'))
   d['mode']='cheat'
   self.assertEqual(r.output_paths(d,Path('outputs'))[0].name,'IERG4190_T01_CheatSheet.pdf')
  def test_typeset_integral_is_embedded_vector_paths(self):

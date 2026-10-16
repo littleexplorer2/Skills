@@ -465,7 +465,7 @@ def output_paths(d, output):
         names=[f'{code}_{"-".join(scopes)}_{kind}.pdf']
     if len(set(x.casefold() for x in names)) != len(names):
         raise ValueError('Lecture IDs produce colliding filenames')
-    return [output/code/name for name in names]
+    return [output/name for name in names]
 
 
 def paths_alias(left, right):
