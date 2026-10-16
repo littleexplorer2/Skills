@@ -1,0 +1,6 @@
+interface:
+  display_name: "Lecture Review PDF"
+  short_description: "课程PPT逻辑复习PDF与A4单面/双面考试Cheat Sheet"
+  default_prompt: "请使用 lecture-review-pdf，根据我提供的课程PPT或笔记制作PDF。先向我提供模式及仍未明确的关键选择，不要擅自决定。"
+policy:
+  allow_implicit_invocation: true

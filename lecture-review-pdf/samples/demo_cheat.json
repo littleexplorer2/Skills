@@ -1,0 +1,181 @@
+{
+  "mode": "cheat",
+  "meta": {
+    "title": "Demo · Lecture 4 生态足迹复习",
+    "course": "DEMO / Sustainable Development",
+    "subtitle": "Two-part course review",
+    "source_note": "Demo data only; page numbers refer to original Lecture 4.pdf",
+    "course_code": "DEMO101"
+  },
+  "settings": {
+    "sides": "duplex",
+    "orientation": "portrait",
+    "columns": 2,
+    "font_profile": "dense",
+    "language": "zh-en"
+  },
+  "lectures": [
+    {
+      "id": "L4",
+      "title": "Ecological Footprint",
+      "source_name": "Lecture 4.pdf",
+      "core_question": "如何将土地生产力换算为可比较的全球公顷？",
+      "overview": "从生物生产性土地资源的需求引入生态足迹，再解释产量校正与土地类型校正。",
+      "logic_steps": [
+        {
+          "heading": "提出衡量问题",
+          "detail": "发展与消费活动使用不同生产力的土地，必须采用统一核算尺度。",
+          "source_pages": "P32-35"
+        },
+        {
+          "heading": "说明两次转换",
+          "detail": "Quantity / Yield 得到实际面积；Yield Factor 换算世界同类土地；Equivalence Factor 换算 gha。",
+          "source_pages": "P36-38"
+        }
+      ],
+      "concept_entries": [
+        {
+          "heading": "Ecological Footprint",
+          "details": "人类消费自然资源所需要的生物生产性土地与水域面积，属于需求侧。",
+          "keywords": [
+            "EF",
+            "gha"
+          ],
+          "source_pages": "P32-33",
+          "priority": "A",
+          "cheat_text": "EF 是满足资源消费需求的生物生产性面积；需求侧，结果以 gha 衡量；不要等同 CO₂ 排放质量。"
+        },
+        {
+          "heading": "Yield Factor / Equivalence Factor",
+          "details": "前者修正地区间同类土地生产力，后者修正不同土地类型生物生产力。",
+          "formula": "EF = (Q / Y) × YF × EQF",
+          "example": "2 tons / (8 tons/ha) × 1.28 × 2.52 = 0.8064 gha",
+          "source_pages": "P36-38",
+          "priority": "A",
+          "cheat_text": "Q=资源产量(tons)，Y=单产(tons/ha)，YF=同类土地地区生产力系数，EQF=土地类型生物生产力系数；EF=(Q/Y)YF EQF，结果 gha。"
+        },
+        {
+          "heading": "复习要点 01 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P32",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 02 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P33",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 03 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P34",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 04 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P35",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 05 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P36",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 06 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P37",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 07 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P38",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 08 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P32",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 09 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P33",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 10 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P34",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 11 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P35",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 12 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P36",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 13 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P37",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 14 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P38",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 15 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P32",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        },
+        {
+          "heading": "复习要点 16 · 生态足迹与资源核算",
+          "details": "源文件归纳",
+          "source_pages": "P33",
+          "cheat_text": "生态足迹以全球公顷 gha 衡量资源需求，首先将产量除以单产得到 ha，再通过 YF 修正地区的同类土地生产能力，最后通过 EQF 转为全球平均生物生产性面积。特别注意 ha、wha、gha 的单位和含义并不相同。",
+          "formula": "EF = (Q/Y) × YF × EQF"
+        }
+      ]
+    }
+  ],
+  "cross_lecture_links": [
+    "EF 量化资源消费需求；碳足迹量化温室气体排放。"
+  ],
+  "self_checks": [
+    {
+      "question": "0.25 ha 是否等于 0.25 gha？",
+      "answer": "不等于，需进行生产力标准化。"
+    }
+  ]
+}
