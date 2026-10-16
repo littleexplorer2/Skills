@@ -11,7 +11,7 @@ import build_pdf
 
 
 class PrintedSourcesTests(unittest.TestCase):
-    def test_each_face_identifies_its_original_file_without_html_injection(self):
+    def test_each_face_identifies_its_original_file_without_latex_injection(self):
         data = json.loads((ROOT / 'samples' / 'demo_cheat.json').read_text(encoding='utf-8'))
         first = copy.deepcopy(data['lectures'][0])
         second = copy.deepcopy(first)
@@ -23,12 +23,12 @@ class PrintedSourcesTests(unittest.TestCase):
         second['concept_entries'][0]['page'] = 2
         data['lectures'] = [first, second]
         build_pdf.validate(data)
-        faces = build_pdf.cheat_html(data, 8.2).split('<div class="sheet">')[1:]
+        faces = build_pdf.cheat_tex(data, 8.2).split(r'\clearpage')
         self.assertEqual(len(faces), 2)
-        self.assertIn('A = alpha&lt;source&gt;.pdf', faces[0])
-        self.assertNotIn('beta&amp;source.pdf', faces[0])
-        self.assertIn('B = beta&amp;source.pdf', faces[1])
-        self.assertNotIn('alpha&lt;source&gt;.pdf', faces[1])
+        self.assertIn('A = alpha<source>.pdf', faces[0])
+        self.assertNotIn('beta\\&source.pdf', faces[0])
+        self.assertIn('B = beta\\&source.pdf', faces[1])
+        self.assertNotIn('alpha<source>.pdf', faces[1])
 
 
 if __name__ == '__main__':

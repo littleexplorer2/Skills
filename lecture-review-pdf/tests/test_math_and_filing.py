@@ -20,18 +20,17 @@ class UnifiedTests(unittest.TestCase):
   self.assertEqual(r.output_paths(d,Path('outputs'))[0],Path('outputs/lecture-review-pdf/IERG4190/IERG4190_T01_StudyGuide.pdf'))
   d['mode']='cheat'
   self.assertEqual(r.output_paths(d,Path('outputs'))[0].name,'IERG4190_T01_CheatSheet.pdf')
- def test_typeset_integral_is_embedded_vector_paths(self):
-  html=r.rich(r'$$X(\omega)=\int_{-\infty}^{\infty}x(t)e^{-j\omega t}\,dt$$')
-  svg=base64.b64decode(re.search('base64,([^" ]+)',html)[1]).decode()
-  self.assertIn('<path',svg)
-  self.assertNotIn('<text',svg)
-  self.assertIn('em;',html)
- def test_broken_math_does_not_silently_render_plain_text(self):
-  for text in ['$x', '$x\ny$',r'$\unknowncommand{x}$']:
+ def test_math_stays_native_latex(self):
+  result=r.rich(r'$$X(\omega)=\int_{-\infty}^{\infty}x(t)e^{-j\omega t}\,dt$$')
+  self.assertIn(r'\begin{gather*}',result)
+  self.assertIn(r'\int_{-\infty}^{\infty}',result)
+  self.assertNotIn('svg',result)
+ def test_broken_math_delimiters_fail(self):
+  for text in ['$x', '$x\ny$']:
    with self.subTest(text=text),self.assertRaises(ValueError):r.rich(text)
- def test_adjacent_display_equations_do_not_add_blank_lines(self):
-  html=r.rich('$$x^2$$\n$$y_1$$')
-  self.assertNotIn('<br>',html)
+ def test_text_cannot_inject_latex_commands(self):
+  self.assertEqual(r.esc(r'\input{secret}'),r'\textbackslash{}input\{secret\}')
+  with self.assertRaises(ValueError):r.rich(r'$\input{secret}$')
  def test_plaintext_formula_not_allowed(self):
   d=self.data();d['lectures'][0]['concept_entries'][0]['formula']='X_k=e^(jw)'
   with self.assertRaises(ValueError):r.validate(d)

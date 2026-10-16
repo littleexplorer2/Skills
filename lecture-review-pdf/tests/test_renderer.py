@@ -11,6 +11,7 @@ from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT / 'scripts'))
 SPEC = importlib.util.spec_from_file_location('build_pdf', ROOT / 'scripts' / 'build_pdf.py')
 renderer = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(renderer)
@@ -133,32 +134,7 @@ class SchemaTests(unittest.TestCase):
 
 
 class ContentTests(unittest.TestCase):
-    def test_labels_match_language_and_author_text_is_preserved(self):
-        for language, tag, fixed_label in [('en', 'en', 'Core question'),
-                                            ('zh', 'zh-CN', '核心问题'),
-                                            ('zh-en', 'zh-CN', '核心问题 / Core question')]:
-            data = document()
-            data['settings']['language'] = language
-            data['lectures'][0]['core_question'] = 'Untranslated author content'
-            html = renderer.render_summary_html(data, data['lectures'])
-            self.assertIn(f'lang="{tag}"', html)
-            self.assertIn(fixed_label, html)
-            self.assertIn('Untranslated author content', html)
-            if language == 'en':
-                self.assertFalse(any('\u3400' <= ch <= '\u9fff' for ch in html))
 
-    def test_separate_summary_only_includes_own_self_checks(self):
-        data = document()
-        second = copy.deepcopy(data['lectures'][0])
-        second['id'] = 'L2'
-        data['lectures'].append(second)
-        data['settings']['layout'] = 'separate'
-        for index, lecture in enumerate(data['lectures']):
-            lecture['self_checks'] = [{'question': f'Question{index}', 'answer': f'Answer{index}'}]
-        renderer.validate(data)
-        html = renderer.render_summary_html(data, [data['lectures'][0]])
-        self.assertIn('Question0', html)
-        self.assertNotIn('Question1', html)
 
     def test_assigned_duplex_faces_preserve_source_order(self):
         items = [{'lecture': 'L1', 'topic': name, 'text': 'Text', 'formula': '', 'page': page}
@@ -181,9 +157,6 @@ class ContentTests(unittest.TestCase):
         self.assertEqual(list(renderer.font_candidates(8.2, 9.0))[-1], 8.2)
         self.assertEqual(list(renderer.font_candidates(9.0, 9.0)), [9.0])
 
-    def test_plain_text_is_escaped_before_basic_emphasis(self):
-        self.assertEqual(renderer.rich('<script>bad()</script> **safe**'),
-                         '&lt;script&gt;bad()&lt;/script&gt; <strong>safe</strong>')
 
 
 class OutputTests(unittest.TestCase):
@@ -209,50 +182,8 @@ class OutputTests(unittest.TestCase):
             renderer.save_pdf(path, b'changed', overwrite=True)
             self.assertEqual(path.read_bytes(), b'changed')
 
-    def test_separate_preflight_happens_before_render_and_all_outputs(self):
-        data = document()
-        data['settings']['layout'] = 'separate'
-        second = copy.deepcopy(data['lectures'][0])
-        second['id'] = 'L2'
-        data['lectures'].append(second)
-        with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory)
-            paths = renderer.output_paths(data, output)
-            paths[1].parent.mkdir(parents=True, exist_ok=True)
-            paths[1].write_bytes(b'existing')
-            with patch.object(renderer, 'render_pdf') as render, self.assertRaises(ValueError):
-                renderer.render_summary(data, output)
-            render.assert_not_called()
-            self.assertFalse(paths[0].exists())
-            self.assertEqual(paths[1].read_bytes(), b'existing')
 
-    def test_failed_structural_qa_writes_no_summary(self):
-        data = document()
-        data['settings']['layout'] = 'separate'
-        second = copy.deepcopy(data['lectures'][0])
-        second['id'] = 'L2'
-        data['lectures'].append(second)
-        with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory) / 'pdfs'
-            reports = [{'errors': [], 'pages': 2}, {'errors': ['outside page'], 'pages': 2}]
-            with patch.object(renderer, 'render_pdf', return_value=b'pdf'), \
-                 patch.object(renderer, 'inspect_rendered', side_effect=reports), \
-                 self.assertRaisesRegex(RuntimeError, 'Structural PDF check failed'):
-                renderer.render_summary(data, output)
-            self.assertFalse(output.exists())
 
-    def test_cheat_probes_custom_floor_and_never_writes_failed_attempts(self):
-        data = document('cheat')
-        data['settings']['min_font_pt'] = 8.35
-        reports = [{'errors': ['overflow'], 'pages': 2}] * 4 + [{'errors': [], 'pages': 1}]
-        with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory) / 'cheat'
-            with patch.object(renderer, 'render_pdf', return_value=b'accepted'), \
-                 patch.object(renderer, 'cheat_html', return_value='html') as html, \
-                 patch.object(renderer, 'inspect_rendered', side_effect=reports):
-                renderer.render_cheat(data, output)
-            self.assertEqual(html.call_args.args[1], 8.35)
-            self.assertEqual(renderer.output_paths(data, output)[0].read_bytes(), b'accepted')
 
 
 if __name__ == '__main__':

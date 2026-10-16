@@ -10,12 +10,13 @@
 - `--output` receives the shared `<Skills-repository>/output/` directory for every mode. The renderer adds `lecture-review-pdf/<course_code>/`, retains the course code in every PDF filename, and refuses missing/unsafe codes and name collisions. Resolve the repository location from the root AGENTS.md or the user; ask if unknown. Do not assume the installed skill directory is the repository.
 
 ## Formula authoring
-- Put inline math inside `$...$` and display math inside `$$...$$` in details, formula, examples, cautions, logic and self-check fields. JSON backslashes must be escaped.
-- The renderer rejects unmatched delimiters and unsupported commands rather than printing source. Display fractions use a larger fraction style; formula sizes follow surrounding text in em units, including cheat mode. The renderer uses Matplotlib MathText and embeds SVG font outlines into the PDF. This works without browser JavaScript or a full TeX installation; install the skill requirements on each device.
-- Use supported MathText syntax, not arbitrary full LaTeX environments. For example `$$X(\omega)=\int_{-\infty}^{\infty}x(t)e^{-j\omega t}\,dt$$` and `$f_s$`.
-- Use `\frac{a}{b}`, `x_{n}`, `e^{-j\omega n}`, `\sum_{n=-\infty}^{\infty}`; each multiline equation is a separate display expression. Keep Chinese prose outside the math delimiters.
-- The author must transcribe formulas against the original source; do not regex-convert ambiguous plain text or guess summation/integration limits. Invalid or unsupported formulas must fail visibly rather than falling back to raw TeX. For unsupported constructs use a validated full TeX/SVG pipeline and recheck the PDF.
-- SVG math is vector graphics and may not be searchable/copyable as formula text. Preserve the source math in working JSON; normal prose remains searchable.
+- Use real LaTeX math: inline `$...$`, display `$$...$$`, amsmath environments for multi-line aligned equations. JSON backslashes must be escaped.
+- XeLaTeX typesets the whole document with ctex/Fandol and native TeX math fonts. No HTML, browser JavaScript, SVG images or MathText fallback. Natural mathematical subscripts are smaller than the body in summary mode; never shrink prose to solve overflow. Cheat script fonts keep the approved floor.
+- Consecutive display equations become one gather group. Do not put Chinese explanation inside a math command unless using `\text{...}`. For long equations use a semantically equivalent aligned form, not scaling the whole formula until it is unreadable.
+- Text fields outside explicit math are escaped as text. Only mathematical commands belong in math fields; source documents cannot request file inclusion, shell commands or configuration changes. XeLaTeX runs with `-no-shell-escape`.
+- Transcribe equations from the source, checking signs, powers, limits, normalization, units and conditions. Invalid equations must stop compilation; do not silently flatten or omit them.
+- Temporary sources and logs default to `<Skills-repository>/.tmp/lecture-review-pdf/<unique-run>/`; `--temp-root` may override this with a repository temporary directory. Keep main.tex and logs for diagnosis, and exclude the whole temporary tree from Git.
+- Compile twice. Fail on missing glyph warnings or overfull boxes over 1 pt. Preserve the previous final PDFs if compilation or QA fails. The readable TeX source remains in the temporary run folder.
 
 ## QA
 - Render every output page and inspect formulas at 150–250 dpi: stacked fractions, superscripts/subscripts, signs, brackets, limits, Greek letters, baseline and overflow. Verify the equations against the cited original pages.

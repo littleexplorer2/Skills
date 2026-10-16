@@ -26,15 +26,16 @@ description: 从用户提供的课件 PPT/PDF、课堂笔记和教材制作有�
 
 编写前读取 [output_and_math.md](references/output_and_math.md)。`meta.course_code` 必须来自用户或明确的课程标识，缺失时询问；沿用已确认编码。先读取 Skills 仓库根目录的 `AGENTS.md`，由其确定共同输出根目录 `<Skills仓库>/output/`。本 skill 的生成区域为 `output/lecture-review-pdf/<课程编码>/`；文件名仍保留课程编码，例如 `output/lecture-review-pdf/IERG4190/IERG4190_T01_StudyGuide.pdf`。两端使用相同 JSON、脚本与命名。
 
-公式，包括正文、例题、自测中的行内公式，使用 `$...$` 或 `$$...$$` 的 MathText 语法。渲染器将公式嵌入为矢量路径，不依赖预览器再次解释。不可用原始 `^`、`_` 或缺字 Unicode 假装完成排版。逐项核对数学语义；自动检查不能证明公式正确。矢量公式本身可能不能搜索或复制，工作 JSON 保留原式。
+公式，包括正文、例题、自测中的行内公式，使用 `$...$` 或 `$$...$$` 的 LaTeX 数学语法。由 XeLaTeX 统一排版正文和公式，不再使用 HTML/SVG/MathText 管线。逐项核对数学语义；不能把未渲染的源码当成排版成功。
 
+中间文件放在 Skills 仓库 `.tmp/lecture-review-pdf/<独立运行目录>/`，包括 `.tex`、编译 PDF、日志及辅助文件；临时目录受 Git 忽略。所有文档通过检查后才写入正式生成区域，失败保留诊断文件和旧 PDF。
 ## 工作流程
 
 1. **盘点输入**：确认文件顺序、页数、课程范围和扫描质量。PPT/PPTX 先用可用工具导出或读取并核对页面；渲染脚本不直接解析课件。原输入保持只读。
 2. **读取证据**：按讲建立“原页码 → 讲解主线 → 概念/公式/图表/例题”映射。重要图表要查看原页图像，核对坐标轴、图例与单位；OCR 不能代替核对。
 3. **组织内容**：summary 读 [summary_mode.md](references/summary_mode.md)；cheat 读 [cheat_sheet_mode.md](references/cheat_sheet_mode.md)。先完成准确解释，再压缩用于打印的文字。
 4. **编写 JSON**：按 [content_schema.md](references/content_schema.md) 填写。语言选项控制模板标签；正文必须由作者按所选语言撰写。复杂公式、原图和表格若不能被内置渲染器表达，应选择可验证的扩展方式，不能无声省略或输出未渲染的 LaTeX。
-5. **检查运行环境**：运行 `scripts/check_environment.py`；安装与 Windows DLL 配置见 [README.md](README.md)。复用现有解释器与依赖，不在每次生成时升级软件或改全局环境。
+5. **检查运行环境**：运行 `scripts/check_environment.py`；XeLaTeX 与跨平台配置见 [README.md](README.md)。复用现有解释器与依赖，不在每次生成时升级软件或改全局环境。
 6. **验证并生成**（命令从 skill 根目录执行；`python` 不可用时使用已确认的解释器路径）：
 
    ```bash
@@ -55,4 +56,4 @@ description: 从用户提供的课件 PPT/PDF、课堂笔记和教材制作有�
 
 ## 跨平台运行
 
-Windows 按 README 设置原生 DLL；Mac 可使用 `scripts/build_pdf_mac.sh` / `check_pdf_mac.sh`，支持 `LECTURE_REVIEW_PYTHON` 指定现有环境。不要复制 venv 或 DLL 跨系统。完整 skill 文件夹可通过 ZIP/Git 同步，本地安装不等于账号自动同步。
+Windows 按 README 配置 XeLaTeX；Mac 可使用 `scripts/build_pdf_mac.sh` / `check_pdf_mac.sh`，支持 `LECTURE_REVIEW_PYTHON` 指定现有环境。不要复制虚拟环境或 TeX 运行库跨系统。完整 skill 文件夹可通过 ZIP/Git 同步，本地安装不等于账号自动同步。
