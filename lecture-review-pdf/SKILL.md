@@ -24,7 +24,7 @@ description: 从用户提供的课件 PPT/PDF、课堂笔记和教材制作有�
 
 ## 课程归档与公式
 
-编写前读取 [output_and_math.md](references/output_and_math.md)。`meta.course_code` 必须来自用户或明确的课程标识，缺失时询问；沿用已确认编码。统一输出 `<root>/<code>_<scope>_<kind>.pdf`，例如 `IERG4190_T01_StudyGuide.pdf`。两端使用相同 JSON、脚本与命名。
+编写前读取 [output_and_math.md](references/output_and_math.md)。`meta.course_code` 必须来自用户或明确的课程标识，缺失时询问；沿用已确认编码。先读取 Skills 仓库根目录的 `AGENTS.md`，由其确定共同输出根目录 `<Skills仓库>/output/`。本 skill 的生成区域为 `output/lecture-review-pdf/<课程编码>/`；文件名仍保留课程编码，例如 `output/lecture-review-pdf/IERG4190/IERG4190_T01_StudyGuide.pdf`。两端使用相同 JSON、脚本与命名。
 
 公式，包括正文、例题、自测中的行内公式，使用 `$...$` 或 `$$...$$` 的 MathText 语法。渲染器将公式嵌入为矢量路径，不依赖预览器再次解释。不可用原始 `^`、`_` 或缺字 Unicode 假装完成排版。逐项核对数学语义；自动检查不能证明公式正确。矢量公式本身可能不能搜索或复制，工作 JSON 保留原式。
 
@@ -39,11 +39,11 @@ description: 从用户提供的课件 PPT/PDF、课堂笔记和教材制作有�
 
    ```bash
    python scripts/build_pdf.py --input data.json --validate-only
-   python scripts/build_pdf.py --input data.json --output outputs
+   python scripts/build_pdf.py --input data.json --output ../output
    python scripts/check_pdf.py result.pdf --input data.json --json
    ```
 
-   所有模式的 `--output` 都是根目录，直接保存到指定输出目录，不按课程编码创建子文件夹，需逐个检查其 PDF。已有输出默认不覆盖；确认是本任务可替换的生成物后才用 `--overwrite`。
+   所有模式的 `--output` 都接收 Skills 仓库的共同 `output/` 目录；生成器追加 `lecture-review-pdf/<课程编码>/`，需逐个检查其 PDF。从已安装副本运行时传入仓库共同输出目录的绝对路径，不能把安装目录当成仓库。已有输出默认不覆盖；确认是本任务可替换的生成物后才用 `--overwrite`。
 7. **审阅结果**：逐页渲染到 PNG（如 `pdftoppm -r 150 -png result.pdf proof`），检查文字、公式、表格、栏间和页眉。再按证据映射核对内容与引用。自动检查只覆盖纸张、页数、字号、文本提取和边界，不能证明事实完整、公式语义、无重叠或真实打印效果。
 8. **交付**：提供 PDF 链接，说明模式、来源与覆盖范围、语言、页面配置、实测字号，以及用户同意的删减和未解决疑点。只有已实际执行的检查才报告为通过。cheat 需提醒按 A4 实际大小/100% 打印；未经实际打印不得声称完成物理打印验证。
 

@@ -86,4 +86,4 @@ source 页码为字符串，支持“PDF p. 12（slide 10）”等可解释定�
 
 ## 格式边界
 
-文本经 HTML 转义，支持 `**粗体**`、换行及 `$...$` / `$$...$$` MathText 公式（JSON 内反斜杠必须双写）。详见 `output_and_math.md`。所有模式的输出参数都是根目录。不要添加 renderer 不支持的 `images`、`tables` 等字段后假设它们会被渲染。复杂表达需要扩展实现、同步契约并验证输出。
+文本经 HTML 转义，支持 `**粗体**`、换行及 `$...$` / `$$...$$` MathText 公式（JSON 内反斜杠必须双写）。详见 `output_and_math.md`。所有模式的输出参数都是 Skills 仓库共同 `output/` 目录，生成器会追加 `lecture-review-pdf/<course_code>/`。不要添加 renderer 不支持的 `images`、`tables` 等字段后假设它们会被渲染。复杂表达需要扩展实现、同步契约并验证输出。

@@ -37,16 +37,16 @@ py -3.12 scripts/check_environment.py --json
 
 ## 生成与检查
 
-以下命令从 skill 根目录执行，输出路径位于当前任务工作目录，不能指向原始课程文件。
+以下命令从 skill 根目录执行，共同输出根目录遵循仓库根 AGENTS.md，使用 `<Skills仓库>/output/`，不能指向原始课程文件。
 
 ```bash
 python scripts/build_pdf.py --input data.json --validate-only
-python scripts/build_pdf.py --input data.json --output /path/to/task/outputs
-python scripts/check_pdf.py /path/to/task/outputs/IERG4190_T01_StudyGuide.pdf --input data.json --json
-pdftoppm -r 150 -png /path/to/task/outputs/IERG4190_T01_StudyGuide.pdf /path/to/task/proof
+python scripts/build_pdf.py --input data.json --output /path/to/Skills/output
+python scripts/check_pdf.py /path/to/Skills/output/lecture-review-pdf/IERG4190/IERG4190_T01_StudyGuide.pdf --input data.json --json
+pdftoppm -r 150 -png /path/to/Skills/output/lecture-review-pdf/IERG4190/IERG4190_T01_StudyGuide.pdf /path/to/task/proof
 ```
 
-`--validate-only` 不需要 WeasyPrint 或 PyMuPDF。所有模式 `--output` 均为根目录，文件按课程编码及 lecture ID 分类命名；对生成的每个 PDF 都运行检查。顶层跨讲联系/自测不能用于 `summary + separate`，请将自测移到所属 lecture，综合资料另行组织。
+`--validate-only` 不需要 WeasyPrint 或 PyMuPDF。所有模式 `--output` 均为仓库共同 `output/` 根目录，生成器追加 `lecture-review-pdf/<课程编码>/`，文件名保留课程编码及 lecture ID；对生成的每个 PDF 都运行检查。顶层跨讲联系/自测不能用于 `summary + separate`，请将自测移到所属 lecture，综合资料另行组织。
 
 已有输出默认拒绝覆盖；确认是可替换的生成结果后加 `--overwrite`。PDF 输出与输入 JSON 相同的路径始终被拒绝。结构检查不通过的内容不会写成成功结果；失败时不要把旧输出误认为本次结果。
 
@@ -76,8 +76,8 @@ python scripts/build_pdf.py --input samples/demo_cheat.json --output /path/to/ta
 
 ## Mac 与 Windows 统一版
 
-版本：2026-10-16 unified。JSON 必须含 `meta.course_code`；所有模式 `--output` 为目录，例如 `outputs/IERG4190_T01_StudyGuide.pdf`。命名及数学契约见 `references/output_and_math.md`。
+版本：2026-10-16 unified。JSON 必须含 `meta.course_code`；所有模式 `--output` 为目录，例如 `output/lecture-review-pdf/IERG4190/IERG4190_T01_StudyGuide.pdf`。命名及数学契约见 `references/output_and_math.md`。
 
-macOS 复用专用环境 `~/Library/Application Support/LectureReviewPDF/venv`，或设置 `LECTURE_REVIEW_PYTHON` 为已安装 requirements.txt 的解释器。运行 `bash scripts/build_pdf_mac.sh --input data.json --output outputs`。检查用 `bash scripts/check_pdf_mac.sh <实际生成的PDF> --input data.json --json`。原生 Pango/GLib 仍须在该设备配置；wrapper 查找 /opt/homebrew/lib 与 /usr/local/lib。
+macOS 复用专用环境 `~/Library/Application Support/LectureReviewPDF/venv`，或设置 `LECTURE_REVIEW_PYTHON` 为已安装 requirements.txt 的解释器。运行 `bash scripts/build_pdf_mac.sh --input data.json --output /path/to/Skills/output`。检查用 `bash scripts/check_pdf_mac.sh <实际生成的PDF> --input data.json --json`。原生 Pango/GLib 仍须在该设备配置；wrapper 查找 /opt/homebrew/lib 与 /usr/local/lib。
 
 两端复制完整 skill 文件夹，不复制 venv、缓存或原生库。更新不会自动重制旧 PDF。不存在随包提供的 Install.command；依赖安装以本文件命令为准。Linux 可使用同一 Python 核心，但也需要系统原生库。运行环境及字体不同，分页可能略有区别；每台机器都需检查输出。

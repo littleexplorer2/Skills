@@ -450,7 +450,7 @@ def inspect_rendered(pdf_bytes, **settings):
 
 def output_paths(d, output):
     if output.suffix.lower() == '.pdf':
-        raise ValueError('--output is the root directory in the unified version, not a PDF filename')
+        raise ValueError('--output is the shared Skills repository output directory, not a PDF filename')
     code=d['meta']['course_code']
     def clean(value):
         value=re.sub('[^A-Za-z0-9_-]+', '_', value).strip('_')
@@ -465,7 +465,7 @@ def output_paths(d, output):
         names=[f'{code}_{"-".join(scopes)}_{kind}.pdf']
     if len(set(x.casefold() for x in names)) != len(names):
         raise ValueError('Lecture IDs produce colliding filenames')
-    return [output/name for name in names]
+    return [output/'lecture-review-pdf'/code/name for name in names]
 
 
 def paths_alias(left, right):
