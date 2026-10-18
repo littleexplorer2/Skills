@@ -1,0 +1,6 @@
+interface:
+  display_name: "邮件撰写 · 中英双语"
+  short_description: "中英文邮件三种礼貌风格，配置默认姓名；语言、风格与学号缺项时先选择"
+  default_prompt: "使用 $email-draft 帮我撰写邮件；若缺少邮件语言、风格或学号选项，请先弹出选择框让我确认。"
+policy:
+  allow_implicit_invocation: true
