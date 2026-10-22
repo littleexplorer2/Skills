@@ -1,4 +1,6 @@
-/output/
+/output/**
+!/output/**/
+!/output/**/*.pdf
 .DS_Store
 __pycache__/
 *.pyc
