@@ -1,6 +1,6 @@
 # lecture-review-pdf
 
-从用户课件生成有来源引用的 A4 复习讲义或单/双面参考表。生成器使用 **XeLaTeX**，正文、中文与数学公式在同一 LaTeX 文档中排版，不再使用 HTML、WeasyPrint 或 SVG 公式。
+从用户课件生成有来源引用的 A4 复习讲义或紧凑的单/双面考试参考表。参考表的来源映射保留在 JSON，打印页只放考试有用的内容。生成器使用 **XeLaTeX**，正文、中文与数学公式在同一 LaTeX 文档中排版，不再使用 HTML、WeasyPrint 或 SVG 公式。
 
 ## 一次安装配置
 
@@ -64,6 +64,8 @@ Windows 可直接用 `scripts\build_pdf_windows.cmd` / `scripts\check_pdf_window
 JSON 契约见 `references/content_schema.md`，输出和数学规则见 `references/output_and_math.md`。`summary` 支持合并/分开输出；`cheat` 支持单/双面、方向、栏数和已经确认的字号范围。固定语言标签不翻译作者正文。
 
 普通正文约 10.15 pt；数学上下标按 LaTeX 正常比例缩小，自动检查采用 5 pt 的最低脚注/数学字号门槛，这不允许缩小正文以解决溢出。Cheat 的数学脚本使用与所选正文相同的字号，保留用户确认的字号下限。
+
+Cheat 默认 3 mm 页边距（支持 2–12 mm），省去来源栏、原页码和通用总标题。短公式优先同排，相关公式可集中编号；正文穿插公式时采用紧凑上下间距，并关闭栏内垂直拉伸。编写和视觉验收细则见 `references/cheat_sheet_mode.md`。
 
 生成程序只验证和排版作者提供的内容，不会自动读取原课件或证明事实正确。逐页检查公式、表格、引用和分页，按源文件核对变量、范围、单位和例题。150–250 dpi 检查不能替代实际物理打印。
 

@@ -1,6 +1,6 @@
 ---
 name: lecture-review-pdf
-description: 从用户提供的课件 PPT/PDF、课堂笔记和教材制作有来源页码的 A4 复习 PDF 或单面/双面考试参考表。用于课程主线梳理、概念与公式复习、quiz 重点和 cheat sheet 排版；支持合并或逐份输出。
+description: 从课件、课堂笔记和教材制作有来源页码的 A4 复习 PDF，或只呈现考试有用内容的紧凑单面/双面参考表。用于课程主线梳理、概念与公式复习、quiz 重点和 cheat sheet 排版；支持合并或逐份输出。
 ---
 
 # Lecture Review PDF / 课程复习与考试参考表
@@ -9,6 +9,8 @@ description: 从用户提供的课件 PPT/PDF、课堂笔记和教材制作有�
 
 - **summary**：先重建每讲的教学主线，再解释概念、机制、公式、例题和易错点；按用户要求合并或逐份输出。
 - **cheat**：将用户选择的范围压缩为一张 A4 单面（1 页 PDF）或双面（2 页 PDF），保留公式条件、变量、单位与重要区别。
+
+cheat 打印页只放直接帮助考试查找、判断和计算的内容，不显示来源、文件名、原页码、制作说明或装饰性大标题；来源映射仍保留在编写 JSON 中。具体紧凑公式与留白规则见 [cheat_sheet_mode.md](references/cheat_sheet_mode.md)。summary 继续显示来源页码。
 
 ## 决策与来源边界
 

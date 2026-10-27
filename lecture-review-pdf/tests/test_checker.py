@@ -130,7 +130,7 @@ class CommandTests(unittest.TestCase):
         data = input_data()
         expected = check_pdf.expected_settings(data)
         self.assertEqual(expected['min_font'], 7.2)
-        self.assertEqual(expected['margin_mm'], 4.8)
+        self.assertEqual(expected['margin_mm'], 3.0)
         data['settings']['min_font_pt'] = 7.5
         data['settings']['margin_mm'] = 5.0
         expected = check_pdf.expected_settings(data)

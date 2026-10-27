@@ -71,16 +71,16 @@ source 页码为字符串，支持“PDF p. 12（slide 10）”等可解释定�
   "columns": 2,
   "font_profile": "dense",
   "language": "zh-en",
-  "margin_mm": 4.8,
+  "margin_mm": 3.0,
   "min_font_pt": 7.6
 }
 ```
 
-必填 `sides: single|duplex`、`orientation: portrait|landscape`、`columns: 2|3`、`font_profile: comfortable|dense|ultra`、`language`。`margin_mm` 和 `min_font_pt` 可选；前者为有限数值 4–12 mm，后者在 profile 下限至上限之间。运行时默认值以 renderer 常量为准。
+必填 `sides: single|duplex`、`orientation: portrait|landscape`、`columns: 2|3`、`font_profile: comfortable|dense|ultra`、`language`。`margin_mm` 和 `min_font_pt` 可选；前者为有限数值 2–12 mm，默认 3 mm；后者在 profile 下限至上限之间。运行时默认值以 renderer 常量为准。
 
-每讲在 cheat 模式至少有一个概念条目。脚本渲染 `heading`、`cheat_text`、未原样包含在正文的 `formula` 和来源页码；`details`、教学主线、例子、易错点、顶层联系/自测等不自动转入参考表。需要的内容必须由作者明确纳入 `cheat_text`，不能依赖自动摘要。
+每讲在 cheat 模式至少有一个概念条目。脚本只渲染 `heading`、`cheat_text`、未原样包含在正文的 `formula`；`details`、教学主线、例子、易错点、顶层联系/自测等不自动转入参考表。需要的内容必须由作者明确纳入 `cheat_text`，不能依赖自动摘要。
 
-每面印出该面出现的 lecture ID 与 `source_name` 对照，条目用 ID 与页码定位。来源索引使用相同的正文字号并计入页面容量，不自动缩小或省略文件名。
+来源字段仍为必填，但仅在 JSON 中保留；页面不印课程总标题、lecture ID、来源、源文件名或原页码。`heading` 使用简短知识点名称，不混入作业题号等定位信息。公式同排由作者写在同一个 `$...$` 或 `$$...$$` 中；集中编号可写 `\text{(F1)}`，正文引用 F1，无需添加新字段。渲染器不会自动判断公式是否可合并或替作者分配编号。
 
 可选 `page: 1|2` 固定正背面；单面只允许 1；null/省略表示自动分配。双面需要至少两个条目且每面非空。`page` 不接受布尔值、浮点数或数字字符串。分配只调整摆放，不授权删改内容。
 

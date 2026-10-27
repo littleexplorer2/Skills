@@ -34,7 +34,7 @@ def esc(value):
         else:result.append(ESCAPES.get(c,c))
     return ''.join(result)
 
-def rich(value):
+def rich(value, *, compact=False):
     """Escape prose, preserve explicit LaTeX math, reject incomplete delimiters."""
     result=[]
     for part in MATH_RE.split(str(value or '')):
@@ -51,14 +51,32 @@ def rich(value):
     # Consecutive display expressions share a gather environment and one spacing block.
     joined=re.sub(r'\\\]\s*(?:\\par\s*)?\\\[', lambda m:r'\\', joined)
     joined=joined.replace(r'\[',r'\begin{gather*}').replace(r'\]',r'\end{gather*}')
+    if compact:
+        # Authoring newlines around a display are layout boundaries, not empty
+        # prose paragraphs. Retain normal paragraph breaks elsewhere.
+        joined=re.sub(r'(?:\s*\\par\s*)?(\\begin\{gather\*\})', lambda m:'\n'+m[1], joined)
+        joined=re.sub(r'(\\end\{gather\*\})(?:\s*\\par\s*)?', lambda m:m[1]+'\n', joined)
     return joined
 
 def preamble(d,font=10.15):
-    cheat=d['mode']=='cheat';s=d['settings'];margin=s.get('margin_mm',4.8) if cheat else 17
+    cheat=d['mode']=='cheat';s=d['settings'];margin=s.get('margin_mm',DEFAULT_CHEAT_MARGIN_MM) if cheat else 17
     landscape=',landscape' if cheat and s['orientation']=='landscape' else ''
-    leading=font*(1.22 if cheat else 1.48)
+    leading=font*(1.14 if cheat else 1.48)
     # Cheat subscripts retain the chosen floor instead of being silently reduced.
     mathsize=(rf'\DeclareMathSizes{{{font}}}{{{font}}}{{{font}}}{{{font}}}' if cheat else '')
+    compact=(r'''
+\xeCJKsetup{PunctStyle=plain}
+\setlength{\parskip}{0.5pt}
+\setlength{\abovedisplayskip}{1.5pt}
+\setlength{\belowdisplayskip}{1.5pt}
+\setlength{\abovedisplayshortskip}{0.5pt}
+\setlength{\belowdisplayshortskip}{0.5pt}
+\setlength{\jot}{1pt}
+\setlength{\columnsep}{3mm}
+\setlength{\columnseprule}{0.2pt}
+\setlength{\multicolsep}{0pt}
+\raggedcolumns
+''' if cheat else '')
     return r'''\documentclass[UTF8,fontset=fandol,10pt,a4paper]{ctexart}
 \usepackage{amsmath,amssymb,geometry,xcolor,needspace,enumitem,multicol,fancyhdr,hyperref}
 \geometry{margin='''+str(margin)+'mm'+landscape+r'''}
@@ -82,7 +100,7 @@ def preamble(d,font=10.15):
 \renewcommand{\headrulewidth}{0.3pt}
 \newcommand{\topic}[2]{\par\Needspace{5\baselineskip}\vspace{5pt}{\color{accent}\bfseries #1}\quad{\fontsize{8}{10}\selectfont\color{gray}#2}\par\nobreak\vspace{1pt}}
 \newcommand{\parttitle}[1]{\par\Needspace{7\baselineskip}\vspace{8pt}{\Large\bfseries\color{accent}#1}\par\nobreak\vspace{3pt}\hrule\vspace{6pt}}
-'''+mathsize+'\n'+r'\begin{document}'+'\n'+rf'\fontsize{{{font}}}{{{leading:.3f}}}\selectfont'+'\n'
+'''+mathsize+'\n'+r'\begin{document}'+'\n'+rf'\fontsize{{{font}}}{{{leading:.3f}}}\selectfont'+'\n'+compact
 
 def checks_tex(checks,labels):
     if not checks:return ''
@@ -121,19 +139,21 @@ def summary_tex(d,lectures):
     return '\n'.join(p)+'\n\\end{document}\n'
 
 def cheat_tex(d,font):
-    labels=LABELS[d['settings']['language']];items=cheat_items(d)
+    items=cheat_items(d)
     faces=split_two(items) if d['settings']['sides']=='duplex' else [items]
     p=[preamble(d,font)]
     for i,face in enumerate(faces):
         if i:p.append(r'\clearpage')
-        p.append(r'\textbf{'+esc(d['meta']['course_code']+' · '+d['meta'].get('title',labels['cheat_title']))+'}\n\n')
-        present={x['lecture'] for x in face}
-        p.append(esc(labels['sources']+': '+'; '.join(x['id']+' = '+x['source_name'] for x in d['lectures'] if x['id'] in present))+'\n\n')
+        # Source mapping remains in the validated JSON, not on exam paper.
         p.append(r'\begin{multicols}{'+str(d['settings']['columns'])+'}')
         for x in face:
-            p.append(r'\par\Needspace{3\baselineskip}\textbf{'+esc(x['lecture']+' · '+x['topic'])+'} '+esc(x['pages'])+'\n\n')
-            p.append(rich(x['text'])+'\n\n')
-            if x['formula'] and x['formula'] not in x['text']:p.append(rich(x['formula'])+'\n\n')
+            p.append(r'\par\Needspace{3\baselineskip}\textbf{'+esc(x['topic'])+r'}\par\nobreak'+'\n')
+            # Keep a display attached to its preceding paragraph: a blank
+            # paragraph here adds a baseline of whitespace before the formula.
+            body=rich(x['text'],compact=True).rstrip()
+            if x['formula'] and x['formula'] not in x['text']:
+                body+='\n'+rich(x['formula'],compact=True).lstrip()
+            p.append(body)
         p.append(r'\end{multicols}')
     return '\n'.join(p)+'\n\\end{document}\n'
 

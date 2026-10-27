@@ -10,7 +10,7 @@ PROFILES = {
     'ultra': (6.6, 7.2),
 }
 
-DEFAULT_CHEAT_MARGIN_MM = 4.8
+DEFAULT_CHEAT_MARGIN_MM = 3.0
 
 SUMMARY_MIN_FONT_PT = 5.0
 
@@ -182,8 +182,8 @@ def validate(d):
         raise ValueError('$.settings.columns: must be integer 2 or 3')
     if 'margin_mm' in s:
         margin = finite_number(s['margin_mm'], '$.settings.margin_mm')
-        if not 4.0 <= margin <= 12.0:
-            raise ValueError('$.settings.margin_mm: must be between 4 and 12 mm')
+        if not 2.0 <= margin <= 12.0:
+            raise ValueError('$.settings.margin_mm: must be between 2 and 12 mm')
     if 'min_font_pt' in s:
         if 'font_profile' not in s:
             raise ValueError('$.settings.min_font_pt: requires font_profile')
