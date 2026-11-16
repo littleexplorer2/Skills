@@ -26,7 +26,7 @@ cheat 打印页只放直接帮助考试查找、判断和计算的内容，不�
 
 ## 课程归档与公式
 
-编写前读取 [output_and_math.md](references/output_and_math.md)。`meta.course_code` 必须来自用户或明确的课程标识，缺失时询问；沿用已确认编码。先读取 Skills 仓库根目录的 `AGENTS.md`，由其确定共同输出根目录 `<Skills仓库>/output/`。本 skill 的生成区域为 `output/lecture-review-pdf/<课程编码>/`；文件名仍保留课程编码，例如 `output/lecture-review-pdf/IERG4190/IERG4190_T01_StudyGuide.pdf`。两端使用相同 JSON、脚本与命名。
+编写前读取 [output_and_math.md](references/output_and_math.md)。`meta.course_code` 必须来自用户或明确的课程标识，缺失时询问；沿用已确认编码。先读取 Skills 仓库根目录的 `AGENTS.md`，由其确定共同输出根目录 `<Skills仓库>/output/`。本 skill 的生成区域为 `output/lecture-review-pdf/<课程编码>/`；文件名仍保留课程编码，例如 `output/lecture-review-pdf/IERG4190/IERG4190__T01__StudyGuide.pdf`。两端使用相同 JSON、脚本与命名。
 
 公式，包括正文、例题、自测中的行内公式，使用 `$...$` 或 `$$...$$` 的 LaTeX 数学语法。由 XeLaTeX 统一排版正文和公式，不再使用 HTML/SVG/MathText 管线。逐项核对数学语义；不能把未渲染的源码当成排版成功。
 

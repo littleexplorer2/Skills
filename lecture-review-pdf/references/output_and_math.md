@@ -2,11 +2,11 @@
 
 ## Storage
 - Course code comes from explicit user input or an unambiguous source label; never infer it from a vague filename. If missing, ask while continuing independent inspection.
-- Read the Skills repository root `AGENTS.md` for the shared output root. Use `<Skills-repository>/output/lecture-review-pdf/<course_code>/<course_code>_<scope>_<kind>.pdf`.
-- Example: `output/lecture-review-pdf/IERG4190/IERG4190_T01_StudyGuide.pdf`; combined `IERG4190_T01-T02_StudyGuide.pdf`; cheat `IERG4190_T01-T02_CheatSheet.pdf`.
-- Use zero-padded scope IDs such as T01, L02. Preserve the confirmed official course code. Kind is StudyGuide or CheatSheet. Do not add generic final/latest or timestamps by default.
+- Read the Skills repository root `AGENTS.md` for the shared output root. Use `<Skills-repository>/output/lecture-review-pdf/<course_code>/<course_code>__<scope>__<kind>.pdf`.
+- Examples: `IERG4190__T01__StudyGuide.pdf`; contiguous Topic 1–2 `IERG4190__T01-T02__StudyGuide.pdf`; nonconsecutive Topics 1 and 3 `IERG4190__T01+T03__StudyGuide.pdf`; cheat `IERG4190__T01-T02__CheatSheet.pdf`.
+- Scope uses the author-confirmed lecture IDs. Use zero-padded IDs such as T01, L02 or S03_01; for a complete consecutive run of IDs with one prefix and numeric width, the generator writes first-last with `-`. Otherwise it joins IDs in source order with `+`. Kind is StudyGuide or CheatSheet. Do not use generic final/latest or timestamps.
 - Keep course-specific drafts, JSON, extracted text and page previews in `output/lecture-review-pdf/<course_code>/work/`, or use task scratch space during execution. Never move the user's source files without instruction.
-- On revision, explicitly archive the previous PDF under `archive/` with a revision suffix, then rebuild the stable filename; if the user explicitly requests deleting previous generated files, delete those identified old outputs after the replacement passes QA. Never silently overwrite. Do not use two same-name skills as parallel active implementations.
+- On revision, explicitly archive the previous PDF under `archive/` with suffix `__rNN` (e.g. `IERG4190__T01__StudyGuide__r01.pdf`), then rebuild the stable filename; if the user explicitly requests deleting previous generated files, delete those identified old outputs after the replacement passes QA. Never silently overwrite. Do not use two same-name skills as parallel active implementations.
 - `--output` receives the shared `<Skills-repository>/output/` directory for every mode. The renderer adds `lecture-review-pdf/<course_code>/`, retains the course code in every PDF filename, and refuses missing/unsafe codes and name collisions. Resolve the repository location from the root AGENTS.md or the user; ask if unknown. Do not assume the installed skill directory is the repository.
 
 ## Formula authoring

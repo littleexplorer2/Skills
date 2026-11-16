@@ -252,16 +252,30 @@ def output_paths(d, output):
         raise ValueError('--output is the shared Skills repository output directory, not a PDF filename')
     code=d['meta']['course_code']
     def clean(value):
-        value=re.sub('[^A-Za-z0-9_-]+', '_', value).strip('_')
+        value=re.sub('_+', '_', re.sub('[^A-Za-z0-9_]+', '_', value)).strip('_')
         if not value:
             raise ValueError('Lecture ID must contain letters or digits for file naming')
         return value
     scopes=[clean(x['id']) for x in d['lectures']]
+    if len(set(x.casefold() for x in scopes)) != len(scopes):
+        raise ValueError('Lecture IDs produce colliding filenames')
+    def group_scope(ids):
+        if len(ids) == 1:
+            return ids[0]
+        numbered=[re.fullmatch(r'([A-Za-z][A-Za-z0-9_]*?)(\d+)', x) for x in ids]
+        if all(numbered):
+            prefix=numbered[0].group(1)
+            width=len(numbered[0].group(2))
+            numbers=[int(match.group(2)) for match in numbered]
+            if (all(match.group(1) == prefix and len(match.group(2)) == width for match in numbered)
+                    and numbers == list(range(numbers[0], numbers[0] + len(ids)))):
+                return f'{ids[0]}-{ids[-1]}'
+        return '+'.join(ids)
     if d['mode']=='summary' and d['settings']['layout']=='separate':
-        names=[f'{code}_{scope}_StudyGuide.pdf' for scope in scopes]
+        names=[f'{code}__{scope}__StudyGuide.pdf' for scope in scopes]
     else:
         kind='StudyGuide' if d['mode']=='summary' else 'CheatSheet'
-        names=[f'{code}_{"-".join(scopes)}_{kind}.pdf']
+        names=[f'{code}__{group_scope(scopes)}__{kind}.pdf']
     if len(set(x.casefold() for x in names)) != len(names):
         raise ValueError('Lecture IDs produce colliding filenames')
     return [output/'lecture-review-pdf'/code/name for name in names]
