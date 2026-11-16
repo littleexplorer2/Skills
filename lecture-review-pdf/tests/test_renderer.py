@@ -160,12 +160,12 @@ class ContentTests(unittest.TestCase):
 
 
 class OutputTests(unittest.TestCase):
-    def test_separate_sanitized_names_cannot_collide(self):
+    def test_separate_numeric_aliases_cannot_collide(self):
         data = document()
         data['settings']['layout'] = 'separate'
-        data['lectures'][0]['id'] = 'A?B'
+        data['lectures'][0]['id'] = 'T1'
         second = copy.deepcopy(data['lectures'][0])
-        second['id'] = 'A!B'
+        second['id'] = 'L01'
         data['lectures'].append(second)
         with self.assertRaisesRegex(ValueError, 'colliding'):
             renderer.output_paths(data, Path('output'))

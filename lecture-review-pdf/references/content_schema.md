@@ -58,7 +58,7 @@ source 页码为字符串，支持“PDF p. 12（slide 10）”等可解释定�
 
 `settings` 只包含 `layout: combined|separate`、`language`。A4 竖版和正文排版由 summary 模板确定。
 
-合并输出可以包含顶层 `cross_lecture_links` 和 `self_checks`。单独输出不接受非空顶层综合复习字段；本讲自测写在 `lectures[].self_checks`。输出是目录，文件名采用 `<课程编码>__<范围>__StudyGuide.pdf`。范围由 `lectures[].id` 生成：连续同系列编号写起止（如 `T01-T04`），非连续或不同系列按源顺序用 `+` 连接；单讲保留零填充 ID（如 `T01`）。
+合并输出可以包含顶层 `cross_lecture_links` 和 `self_checks`。单独输出不接受非空顶层综合复习字段；本讲自测写在 `lectures[].self_checks`。输出是目录，文件名采用 `<课程编码>__<数字范围>__StudyGuide.pdf`。`lectures[].id` 必须含可确认的数字编号，可有字母前缀（如 `L1`、`Topic 01`）和以 `.` 或 `_` 分隔的层级（如 `S03_01`）；文件名去掉前缀，每级补足两位并用 `.` 分层，正文 ID 保留原值。完整连续且父级相同的编号写首尾（如 `03.01-03.04`），其他范围按源顺序用 `+` 连接。非数字、范围表达式或归一后重复的 ID 会报错；多章节必须分别列入 `lectures`，不能用 `ExamScope` 或 `01-04` 作为单个 ID。
 
 ## cheat 设置
 

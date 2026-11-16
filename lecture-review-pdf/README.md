@@ -48,10 +48,10 @@ bash Install.command --check-only
 ```bash
 python scripts/build_pdf.py --input data.json --validate-only
 python scripts/build_pdf.py --input data.json --output /path/to/Skills/output
-python scripts/check_pdf.py /path/to/Skills/output/lecture-review-pdf/IERG4190/IERG4190__T01__StudyGuide.pdf --input data.json --json
+python scripts/check_pdf.py /path/to/Skills/output/lecture-review-pdf/IERG4190/IERG4190__01__StudyGuide.pdf --input data.json --json
 ```
 
-`--output` 是所有 skill 共用的 `Skills/output/` 根目录，生成器追加 `lecture-review-pdf/<课程编码>/`。正式文件名为 `<课程编码>__<范围>__<StudyGuide|CheatSheet>.pdf`；连续同系列 ID 缩为首尾（`L01-L05`），非连续或混合 ID 用 `+` 连接（`L01+L03`）。归档修订版放在 `archive/`，加 `__rNN`，例如 `IERG4190__T01__StudyGuide__r01.pdf`。已有输出默认拒绝覆盖；确认可替换的旧生成物后使用 `--overwrite`。与输入别名的输出始终拒绝。
+`--output` 是所有 skill 共用的 `Skills/output/` 根目录，生成器追加 `lecture-review-pdf/<课程编码>/`。正式文件名为 `<课程编码>__<数字范围>__<StudyGuide|CheatSheet>.pdf`。每级编号至少两位，用 `.` 分层：`L1`、`T01` 归一为 `01`，`S03_01` 归一为 `03.01`。同一层级下完整连续的编号缩为首尾（`01-05`、`03.01-03.04`）；其他范围按输入顺序用 `+` 连接（`01+02+04`）。考试重点也按实际涉及的原章节列范围，不用 `ExamScope` 等自由文本代替编号。归档修订版放在 `archive/`，加 `__rNN`，例如 `IERG4190__01__StudyGuide__r01.pdf`。原始 ID 仍保留在正文和来源数据中；缺少可确认数字编号或归一后重名时，验证与生成都会报错。已有输出默认拒绝覆盖；确认可替换的旧生成物后使用 `--overwrite`。与输入别名的输出始终拒绝。
 
 编译中间文件默认放在 `Skills/.tmp/lecture-review-pdf/<独立运行目录>/`；可通过 `--temp-root` 指定仓库中的另一临时目录。每次保留 `main.tex`、`main.pdf`、日志、aux 等用于检查；这些文件不提交 Git。根 `.gitignore` 忽略临时目录及非 PDF 输出，正式 PDF 可纳入 Git。失败只留下诊断文件，不覆盖旧的正式 PDF。
 

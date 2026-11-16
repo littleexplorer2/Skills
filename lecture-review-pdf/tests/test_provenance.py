@@ -16,7 +16,7 @@ class ExamPageTests(unittest.TestCase):
         data = json.loads((ROOT / 'samples' / 'demo_cheat.json').read_text(encoding='utf-8'))
         data['settings'].update(font_profile='comfortable', orientation='landscape', columns=3)
         data['lectures'] = [{
-            'id': 'INTERNALID', 'title': 'Authoring topic', 'source_name': 'SOURCE_ONLY.pdf',
+            'id': 'INTERNALID99', 'title': 'Authoring topic', 'source_name': 'SOURCE_ONLY.pdf',
             'concept_entries': [
                 {'heading': 'Sampling', 'source_pages': 'SOURCE_PAGE_12', 'page': 1,
                  'cheat_text': 'Periods and frequency. BEFORE',
