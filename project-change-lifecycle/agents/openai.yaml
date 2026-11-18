@@ -1,0 +1,4 @@
+interface:
+  display_name: "项目修改全流程"
+  short_description: "端到端规划、澄清、实施、测试、复核并交付复杂项目修改"
+  default_prompt: "使用 $project-change-lifecycle 依据当前项目架构完成这项修改，并在实施前解决所有未确认决策。"
